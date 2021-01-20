@@ -54,7 +54,7 @@ for imagePath in imagePaths:
 	label = imagePath.split(os.path.sep)[-2]
 
 	# load the input image (224x224) and preprocess it
-	image = load_img(imagePath, target_size=(224, 224))
+	image = load_img(imagePath, target_size=(112, 112))
 	image = img_to_array(image)
 	image = preprocess_input(image)
 
@@ -89,16 +89,16 @@ aug = ImageDataGenerator(
 # load the MobileNetV2 network, ensuring the head FC layer sets are
 # left off
 baseModel = MobileNetV2(weights="imagenet", include_top=False,
-	input_tensor=Input(shape=(224, 224, 3)))
+	input_tensor=Input(shape=(112, 112, 3)))
 
 # construct the head of the model that will be placed on top of the
 # the base model
 headModel = baseModel.output
-headModel = AveragePooling2D(pool_size=(7, 7))(headModel)
+headModel = AveragePooling2D(pool_size=(4, 4))(headModel)
 headModel = Flatten(name="flatten")(headModel)
 headModel = Dense(128, activation="relu")(headModel)
 headModel = Dropout(0.5)(headModel)
-headModel = Dense(7, activation="softmax")(headModel)
+headModel = Dense(2, activation="softmax")(headModel)
 
 # place the head FC model on top of the base model (this will become
 # the actual model we will train)
@@ -144,9 +144,9 @@ model.save(args["model"], save_format="h5")
 N = EPOCHS
 plt.style.use("ggplot")
 plt.figure()
-plt.plot(np.arange(0, N), H.history["loss"], label="train_loss")
+plt.plot(np.arange(0, N), H.history["train_loss"], label="train_loss")
 plt.plot(np.arange(0, N), H.history["val_loss"], label="val_loss")
-plt.plot(np.arange(0, N), H.history["acc"], label="train_acc")
+plt.plot(np.arange(0, N), H.history["train_acc"], label="train_acc")
 plt.plot(np.arange(0, N), H.history["val_acc"], label="val_acc")
 plt.title("Training Loss and Accuracy")
 plt.xlabel("Epoch #")
