@@ -1,0 +1,20 @@
+---
+version: 1
+
+kind: experiment
+
+build:
+  dockerfile: polyaxon/docker/experiment.df
+  context: .
+
+environment:
+  persistence:
+    data: ["data"] # Set this to the key that will be provided to you
+    outputs: exp-output
+
+
+logging:
+  level: DEBUG
+
+run:
+  cmd: python -m src.experiment.main

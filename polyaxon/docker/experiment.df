@@ -1,0 +1,18 @@
+# change base image as required
+FROM registry.aisingapore.net/polyaxon/cuda10:latest
+
+ARG USER="polyaxon"
+ARG WORK_DIR="/home/$USER"
+
+RUN rm /bin/sh && ln -s /bin/bash /bin/sh
+
+WORKDIR $WORK_DIR
+USER $USER
+
+COPY build/conda.yml .
+RUN conda env update -f conda.yml -n base && \
+    rm conda.yml
+
+WORKDIR /code
+
+COPY --chown=$USER:$USER build .

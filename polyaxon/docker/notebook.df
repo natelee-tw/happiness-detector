@@ -1,0 +1,16 @@
+# DO NOT change this base image unless you know what you are doing
+FROM registry.aisingapore.net/polyaxon/ml-workspace:latest
+
+ARG USER="polyaxon"
+ARG WORK_DIR="/home/$USER"
+
+WORKDIR $WORK_DIR
+
+COPY build/conda.yml .
+RUN conda env update -f conda.yml -n base
+RUN rm conda.yml
+
+RUN ln -s /polyaxon-data/ $WORK_DIR/data && \
+    polyaxon config set --host=polyaxon.okdapp.tekong.aisingapore.net --port=80 --use_https=False
+
+ENV LANG "C.UTF-8"

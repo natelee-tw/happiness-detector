@@ -1,0 +1,21 @@
+apiVersion: skaffold/v1
+kind: Config
+metadata:
+  name: assignment7
+build:
+  artifacts:
+  - image: "registry.aisingapore.net/100e/project_name"
+deploy:
+  helm:
+    flags:
+      upgrade:
+        - --install
+    releases:
+      - name: 100e-project_name
+        chartPath: ci/myapp
+        namespace: 100e-project_name
+        values:
+          image: "registry.aisingapore.net/100e/project_name"
+        setValueTemplates:
+          ingress.hosts[0].host: "project_name.100e.okdapp.tekong.aisingapore.net"
+          ingress.hosts[0].paths[0]: "/"

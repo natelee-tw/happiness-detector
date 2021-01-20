@@ -1,0 +1,18 @@
+---
+version: 1
+
+kind: notebook
+
+build:
+  dockerfile: polyaxon/docker/notebook.df
+  context: .
+
+environment:
+  persistence:
+    data: ["data"] # Set this to the key that will be provided to you
+    outputs: exp-output
+
+
+logging:
+  level: DEBUG
+
