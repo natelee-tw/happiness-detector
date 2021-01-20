@@ -54,7 +54,7 @@ for imagePath in imagePaths:
 	label = imagePath.split(os.path.sep)[-2]
 
 	# load the input image (224x224) and preprocess it
-	image = load_img(imagePath, target_size=(112, 112))
+	image = load_img(imagePath, target_size=(160, 160))
 	image = img_to_array(image)
 	image = preprocess_input(image)
 
@@ -89,7 +89,7 @@ aug = ImageDataGenerator(
 # load the MobileNetV2 network, ensuring the head FC layer sets are
 # left off
 baseModel = MobileNetV2(weights="imagenet", include_top=False,
-	input_tensor=Input(shape=(112, 112, 3)))
+	input_tensor=Input(shape=(160, 160, 3)))
 
 # construct the head of the model that will be placed on top of the
 # the base model
