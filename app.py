@@ -52,10 +52,6 @@ def app_object_detection():
 def main():
     st.header("Happiness Index")
 
-    # object_detection_page = "Real time object detection (sendrecv)"
-    # app_mode = st.sidebar.selectbox(
-    #     "Rate your happiness level today",
-    #     ['1', '2', '3', '4', '5'],)
     st.subheader('Are you happy today?')
 
     app_object_detection()
