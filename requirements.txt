@@ -1,5 +1,5 @@
 numpy==1.19.5
-opencv_python==4.5.1.48
+opencv-python-headless
 tensorflow-cpu==2.4.0
 streamlit==0.74.1
 streamlit_webrtc==0.6.0
