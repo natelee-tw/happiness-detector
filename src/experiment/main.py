@@ -16,9 +16,9 @@ def run_experiment(params):
 
         experiment = Experiment()
         logging.basicConfig(level=log_level)
-
+        
         metrics = model.train(params)
-
+        
         experiment.log_metrics(**metrics)
 
         logger.info("Experiment completed")
