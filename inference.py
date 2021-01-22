@@ -7,7 +7,7 @@ import imutils
 
 def detect_and_predict_emotions(frame, faceNet, emotionsNet):
 	(h, w) = frame.shape[:2]
-	blob = cv2.dnn.blobFromImage(frame, 1.0, (300, 300),
+	blob = cv2.dnn.blobFromImage(frame, 1.0, (160, 160),
 		(104.0, 177.0, 123.0))
 
 	faceNet.setInput(blob)
