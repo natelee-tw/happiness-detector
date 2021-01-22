@@ -1,0 +1,40 @@
+# Refer to gitlab CI job configuration docs for details
+# https://docs.gitlab.com/ee/ci/yaml/
+
+# Unlikely you will need to but change this image as required
+# This is NOT the docker image that will run your training.
+# For polyaxon, the image to use is specified in the polyaxon spec file
+image: registry.aisingapore.net/gitlab/conda-runner:latest
+
+stages:
+  - code_check
+  - tests
+  - deploy
+
+variables:
+  # Customise these accordingly especially path
+  # You may want different paths for your artifacts during
+  # different stages but generally not recommended
+  ARTIFACTS_PATH: script
+  
+code_check:
+  stage: code_check
+  script:
+    - conda env update --file conda.yml --name base
+    - pylint -E src
+
+tests:
+  stage: tests
+  script:
+    - echo "Run some tests"
+
+deploy:
+  stage: deploy
+  when: manual
+  only:
+    refs:
+      - master
+  script:
+    - oc login --insecure-skip-tls-verify $CLUSTER_URL --token=$OC_TOKEN
+    - oc project project_name
+    - skaffold run

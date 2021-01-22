@@ -3,7 +3,7 @@ channels:
   - defaults
   - conda-forge
 dependencies:
-  - python=3.8.6
+  - python=3.6.7
   - pip=20.3.3
   - pip:
     - pytest==6.2.1
@@ -20,3 +20,4 @@ dependencies:
     - scikit-learn==0.24.1
     - pillow==8.1.0
     - streamlit==0.74.1
+    - streamlit-webrtc
