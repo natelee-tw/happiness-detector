@@ -6,4 +6,4 @@ opencv_python==4.5.1.48
 streamlit==0.74.1
 streamlit_webrtc==0.6.0
 typing_extensions==3.7.4.3
-opencv-python
+imutils

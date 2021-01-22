@@ -54,8 +54,8 @@ def return_annotated_images(frame, faceNet, emotionsNet):
 
 		label = "{}: {:.2f}%".format(label, max(happy, sad) * 100)
 
-		annotated_image = cv2.putText(frame, label, (startX, startY - 10),
+		frame = cv2.putText(frame, label, (startX, startY - 10),
 			cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
-		annotated_image = cv2.rectangle(annotated_image, (startX, startY), (endX, endY), color, 2)
+		annotated_image = cv2.rectangle(frame, (startX, startY), (endX, endY), color, 2)
 
 	return annotated_image
