@@ -1,5 +1,5 @@
-from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
-from tensorflow.keras.preprocessing.image import img_to_array
+# from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
+# from tensorflow.keras.preprocessing.image import img_to_array
 import numpy as np
 import cv2
 import imutils
@@ -28,8 +28,9 @@ def detect_and_predict_emotions(frame, faceNet, emotionsNet):
 			face = frame[startY:endY, startX:endX]
 			face = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
 			face = cv2.resize(face, (160, 160))
-			face = img_to_array(face)
-			face = preprocess_input(face)
+			# face = face[..., ::-1]
+			#face = img_to_array(face)
+			#face = preprocess_input(face)
 
 			faces.append(face)
 			locs.append((startX, startY, endX, endY))
