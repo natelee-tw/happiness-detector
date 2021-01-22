@@ -7,7 +7,7 @@ import imutils
 
 def detect_and_predict_emotions(frame, faceNet, emotionsNet):
 	(h, w) = frame.shape[:2]
-	blob = cv2.dnn.blobFromImage(frame, 1.0, (160, 160),
+	blob = cv2.dnn.blobFromImage(frame, 1.0, (128, 128),
 		(104.0, 177.0, 123.0))
 
 	faceNet.setInput(blob)
@@ -27,7 +27,7 @@ def detect_and_predict_emotions(frame, faceNet, emotionsNet):
 
 			face = frame[startY:endY, startX:endX]
 			face = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
-			face = cv2.resize(face, (160, 160))
+			face = cv2.resize(face, (128, 128))
 			# face = face[..., ::-1]
 			#face = img_to_array(face)
 			#face = preprocess_input(face)
@@ -48,12 +48,22 @@ def return_annotated_images(frame, faceNet, emotionsNet):
 
 	for (box, pred) in zip(locs, preds):
 		(startX, startY, endX, endY) = box
-		(happy, sad) = pred
+		labels = {
+			0: 'happy',
+			1: 'neutral',
+			2: 'shocked'
+		}
+		colors = {
+			0: (111, 113, 232),  # happu
+			1: (255, 255, 255),  # neutral
+			2: (193, 137, 101)  # shocked
+		}
+		index = np.argmax(pred)
+		emotion = labels[index]
+		color = colors[index]
+		prob = np.max(pred)
 
-		label = "Happy" if happy > sad else "Sad"
-		color = (0, 255, 0) if label == "Happy" else (0, 0, 255)
-
-		label = "{}: {:.2f}%".format(label, max(happy, sad) * 100)
+		label = f"{emotion}: {prob :.2f}"
 
 		frame = cv2.putText(frame, label, (startX, startY - 10),
 			cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)

@@ -30,7 +30,7 @@ def app_object_detection():
             weightsPath = os.path.sep.join(['face_detector',
                                             "res10_300x300_ssd_iter_140000.caffemodel"])
             self.faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
-            self.emotionsNet = load_model('emotions_detector.model')
+            self.emotionsNet = load_model('faces.h5')
 
         def transform(self, frame):
             image = frame.to_ndarray(format="bgr24")
