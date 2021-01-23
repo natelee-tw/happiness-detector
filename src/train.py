@@ -1,7 +1,8 @@
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.applications import MobileNetV2
+from tensorflow.keras.models import Model
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint, ReduceLROnPlateau
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense, Dropout, Conv2D, MaxPooling2D, Flatten, GlobalAveragePooling2D
+from tensorflow.keras.layers import Dense, Dropout, Conv2D, MaxPooling2D, Flatten, AveragePooling2D, Input
 from tensorflow.keras.optimizers import Adam
 import os
 import logging
@@ -19,8 +20,8 @@ sys.path.append(src_path)
 class CustomModel:
     def __init__(self, train_dir, val_dir, test_dir):
         self.batchsize = 48
-        self.img_height = 48  # 224
-        self.img_width = 48  # 224
+        self.img_height = 160  # 224
+        self.img_width = 160  # 224
         self.channels = 3
 
         self.train_dir = train_dir
@@ -62,21 +63,19 @@ class CustomModel:
     def create_model(self):
         """https://github.com/atulapra/Emotion-detection/blob/master/src/emotions.py"""
 
-        self.model = Sequential()
+        baseModel = MobileNetV2(weights="imagenet", include_top=False,
+                                input_tensor=Input(shape=(160, 160, 3)))
+        headModel = baseModel.output
+        headModel = AveragePooling2D(pool_size=(5, 5))(headModel)
+        headModel = Flatten(name="flatten")(headModel)
+        headModel = Dense(128, activation="relu")(headModel)
+        headModel = Dropout(0.5)(headModel)
+        headModel = Dense(3, activation="softmax")(headModel)
 
-        self.model.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=(48, 48, 3)))
-        self.model.add(Conv2D(64, kernel_size=(3, 3), activation='relu'))
-        self.model.add(MaxPooling2D(pool_size=(2, 2)))
-        self.model.add(Dropout(0.25))
+        self.model = Model(inputs=baseModel.input, outputs=headModel)
 
-        self.model.add(Conv2D(128, kernel_size=(3, 3), activation='relu'))
-        self.model.add(MaxPooling2D(pool_size=(2, 2)))
-        self.model.add(Dropout(0.25))
-
-        self.model.add(GlobalAveragePooling2D())
-        self.model.add(Dense(256, activation='relu'))
-        self.model.add(Dropout(0.4))
-        self.model.add(Dense(3, activation='softmax'))
+        for layer in baseModel.layers:
+            layer.trainable = False
 
         # compile our model
         self.model.compile(loss='categorical_crossentropy',
@@ -136,7 +135,7 @@ if __name__ == '__main__':
     model.create_model()
 
     # train model
-    model.train_model('emotions.h5', epochs=20)
+    model.train_model('src/emotions.h5', epochs=20)
 
     test_loss, test_accuracy = model.evaluate_model()
 
