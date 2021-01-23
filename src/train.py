@@ -7,6 +7,7 @@ from tensorflow.keras.optimizers import Adam
 import os
 import logging
 import sys
+from collections import Counter
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -33,6 +34,7 @@ class CustomModel:
         self.train_generator = None
         self.validation_generator = None
         self.test_generator = None
+        self.class_weight = None
 
     def import_augmented_data(self):
         """data augmentation on train/val sets"""
@@ -58,6 +60,10 @@ class CustomModel:
                                                                 target_size=(self.img_height, self.img_width),
                                                                 batch_size=self.batchsize,
                                                                 class_mode='categorical')
+
+        counter = Counter(self.train_generator.classes)
+        total = float(sum(counter.values()))
+        self.class_weight = {class_id: (1 / num_images) * (total) / 2.0 for class_id, num_images in counter.items()}
 
 
     def create_model(self):
@@ -113,7 +119,8 @@ class CustomModel:
                        validation_data=self.validation_generator,
                        validation_steps=self.validation_generator.samples // self.batchsize,
                        epochs=epochs,
-                       callbacks=[early_stopping, checkpoint, learning_rate_reduction])
+                       callbacks=[early_stopping, checkpoint, learning_rate_reduction],
+                       class_weight=self.class_weight)
 
     def evaluate_model(self):
         """compute test accuracy"""
