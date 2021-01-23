@@ -1,7 +1,7 @@
 import streamlit as st
 import cv2
 import os
-from inference import return_annotated_images
+from src.inference import return_annotated_images
 from tensorflow.keras.models import load_model
 from streamlit_webrtc import (
     ClientSettings,
@@ -26,11 +26,12 @@ def app_object_detection():
     class NNVideoTransformer(VideoTransformerBase):
 
         def __init__(self):
-            prototxtPath = os.path.sep.join(['face_detector', "deploy.prototxt"])
-            weightsPath = os.path.sep.join(['face_detector',
+            prototxtPath = os.path.sep.join(['src', 'face_detector', "deploy.prototxt"])
+            weightsPath = os.path.sep.join(['src', 'face_detector',
                                             "res10_300x300_ssd_iter_140000.caffemodel"])
             self.faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
-            self.emotionsNet = load_model('faces.h5')
+            modelPath = os.path.sep.join(["src", "emotions.h5"])
+            self.emotionsNet = load_model(modelPath)
 
         def transform(self, frame):
             image = frame.to_ndarray(format="bgr24")
@@ -51,9 +52,7 @@ def app_object_detection():
 
 def main():
     st.header("Happiness Index")
-
     st.subheader('Are you happy today?')
-
     app_object_detection()
 
 
