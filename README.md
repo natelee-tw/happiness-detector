@@ -5,7 +5,7 @@
 - [Deployment](#deployment)
 - [Overview](#overview)
 - [Information on the Deep Learning model](#Information-on-the-Deep-Learning-model)
-- [Reference and Remarks](#Reference and Remarks)
+- [Reference and Remarks](#Reference-and-Remarks)
 
 ## Deployment
 App can be deployed on Streamlit with ```streamlit run app.py```
@@ -19,7 +19,7 @@ However, as this app requires both openCV and tensorflow, it does not qualify fo
 "Happiness Detector" is an emotion detector web APP deployed on Streamlit. 
 The app can detect 3 emotions ("Happy", "Neutral", and "Sad") and is made up of two different deep learning models, 1. Face Detector and 2. Emotion Detector
 
-### Information on the Deep Learning model
+## Information on the Deep Learning model
 ##### Face Detector- CAFFE Res10 300x300 SSD
 Pretrained [CAFFE Res10 300x300 SSD](https://github.com/opencv/opencv/tree/master/samples/dnn) is used for face detection. It returns the X and Y coordinate of the bounding boxes to face detected.
 Only detected faces with more than 50% confidence are classified with the emotion detector. 
@@ -45,7 +45,7 @@ Architecture of the model consists of the following:
 
 Model training codes can be found in [src/train.py](src/train.py)
 
-### Reference and Remarks
+## Reference and Remarks
 - [Streamlit Webrtc](https://github.com/whitphx/streamlit-webrtc) - For webcam streaming on StreamLit
 - [Face Mask Detection](https://github.com/chandrikadeb7/Face-Mask-Detection) - For model architectural 
 - [Data - MMI Facial Expression Database](https://mmifacedb.eu/) - Dataset
