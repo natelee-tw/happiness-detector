@@ -5,7 +5,7 @@
 - [Deployment](#deployment)
 - [Overview](#overview)
 - [Information on the Deep Learning model](#Information-on-the-Deep-Learning-model)
-- [Remark](#Remark)
+- [Reference and Remarks](#Reference and Remarks)
 
 ## Deployment
 App can be deployed on Streamlit with ```streamlit run app.py```
@@ -13,7 +13,7 @@ App can be deployed on Streamlit with ```streamlit run app.py```
 ![Cover page](gif/gif-extra-large.gif?raw=true "App")
 
 The app is also packaged for deployment on Heroku. 
-But as this app requires both openCV and tensorflow to run, it could not qualify for the free tier. 
+However, as this app requires both openCV and tensorflow, it does not qualify for Heroku free tier. 
 
 ## Overview
 "Happyness Detector" is an emotion detector web APP deployed on Streamlit. 
@@ -45,7 +45,10 @@ Architecture of the model consists of the following:
 
 Model training codes can be found in [src/train.py](src/train.py)
 
-## Remark
+## Reference and Remarks
+- [Streamlit Webrtc](https://github.com/whitphx/streamlit-webrtc) - For webcam streaming on StreamLit
+- [Face Mask Detection](https://github.com/chandrikadeb7/Face-Mask-Detection) - For model architectural 
+- [Data - MMI Facial Expression Database](https://mmifacedb.eu/) - Dataset
 
 ** 'Happyness' is not typo, but a reference to [The Pursuit of Happyness](https://en.wikipedia.org/wiki/The_Pursuit_of_Happyness)
 
