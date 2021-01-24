@@ -1,4 +1,4 @@
-# Happyness Detector
+# Happiness Detector
 
 ## Table of Contents
 
@@ -16,7 +16,7 @@ The app is also packaged for deployment on Heroku.
 However, as this app requires both openCV and tensorflow, it does not qualify for Heroku free tier. 
 
 ## Overview
-"Happyness Detector" is an emotion detector web APP deployed on Streamlit. 
+"Happiness Detector" is an emotion detector web APP deployed on Streamlit. 
 The app can detect 3 emotions ("Happy", "Neutral", and "Sad") and is made up of two different deep learning models, 1. Face Detector and 2. Emotion Detector
 
 ### Information on the Deep Learning model
@@ -45,10 +45,7 @@ Architecture of the model consists of the following:
 
 Model training codes can be found in [src/train.py](src/train.py)
 
-## Reference and Remarks
+### Reference and Remarks
 - [Streamlit Webrtc](https://github.com/whitphx/streamlit-webrtc) - For webcam streaming on StreamLit
 - [Face Mask Detection](https://github.com/chandrikadeb7/Face-Mask-Detection) - For model architectural 
 - [Data - MMI Facial Expression Database](https://mmifacedb.eu/) - Dataset
-
-** 'Happyness' is not typo, but a reference to [The Pursuit of Happyness](https://en.wikipedia.org/wiki/The_Pursuit_of_Happyness)
-
