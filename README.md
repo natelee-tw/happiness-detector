@@ -1,143 +1,51 @@
-# Introduction
+# Happyness Detector
 
-A bare minimum basic template for all 100E projects.
+## Table of Contents
 
-Run `source ./init.sh` and customise the folders as required.
+- [Deployment](#deployment)
+- [Overview](#overview)
+- [Information on the Deep Learning model](#Information-on-the-Deep-Learning-model)
+- [Remark](#Remark)
 
-Checkout [cookie cutter data science](https://drivendata.github.io/cookiecutter-data-science)
-for ideas on how you might want to further customise
-the project.
+## Deployment
+App can be deployed on Streamlit with ```streamlit run app.py```
 
-Write an introduction to your project in this 
-section and describe what it does.
+![Cover page](gif/happyness_detector.gif?raw=true "App")
 
-Create sub sections below to clearly document how
-to build, run, test, deploy, etc.  
+The app is also packaged for deployment on Heroku. 
+But as this app requires both openCV and tensorflow to run, it could not qualify for the free tier. 
 
-The [scripts](scripts) folder contains useful scripts to help
-run model training on external infrastructure and
-build/package your model.
+## Overview
+"Happyness Detector" is an emotion detector web APP deployed on Streamlit. 
+The app can detect 3 emotions ("Happy", "Neutral", and "Sad") and is made up of two different deep learning models, 1. Face Detector and 2. Emotion Detector
 
+### Information on the Deep Learning model
+##### Face Detector- CAFFE Res10 300x300 SSD
+Pretrained [CAFFE Res10 300x300 SSD](https://github.com/opencv/opencv/tree/master/samples/dnn) is used for face detection. It returns the X and Y coordinate of the bounding boxes to face detected.
+Only detected faces with more than 50% confidence are classified with the emotion detector. 
 
-## Polyaxon setup
+##### Emotion Detector 
+The detected faces are then classified with an Emotion Detector. 
+TA pre-trained model - MobilenetV2 with pre-trained weights from Imagenet was utilized as the base model. 
+The model is trained on roughly 75,000 emotion images from [MMI Facial Expression DB](https://mmifacedb.eu/).
 
-### Configuration
+Due to the imbalance dataset, class weights are used to give higher weightage to undersampled classes. 
+Each image is preprocessed into "RGB" mode, size of 224 by 224 and into tensor arrays of shapped (224, 224, 3). 
+The images are then batched prior to feeding into the model. 
 
-Ensure you have the polyaxon client installed.
+Architecture of the model consists of the following:
 
-#### Install Polyaxon client and configure it
-```
-pip install polyaxon-cli==0.5.6
+- Input layer 
+- Image preprocessing layer
+- Base Model: MobileNetv2
+- Global Average Pooling Layer
+- Dense layer 
+- Dropout layer
+- Output dense layer
 
-# Configure your machine to use our Polyaxon cluster
-polyaxon config set --host=polyaxon.okdapp.tekong.aisingapore.net --port=80
-polyaxon login -u <username>
-```
+Model training codes can be found in [src/train.py](src/train.py)
 
-#### Create and initialise your polyaxon project
+## Remark
 
-**Replace {your_project_name} below with the actual project name**
-  
-```
-polyaxon project create --name={your_project_name} --private true
-polyaxon init {your_project_name}
-```
+** 'Happyness' is not typo, but a reference to [The Pursuit of Happyness](https://en.wikipedia.org/wiki/The_Pursuit_of_Happyness)
 
-#### Start your notebook
-
-```
-polyaxon upload
-polyaxon notebook start -f polyaxon/notebook.yml
-```
-
-Wait around a couple of seconds and navigate to 
-the url printed on the console.
-
-You can also open up the dashboard at:
-
-http://polyaxon.okdapp.tekong.aisingapore.net
-
-Navigate to your project and you should see a 
-little **green notebook** link above the Readme on 
-the dashboard.
-
-Click on it and your jupyter server interface should
-show up.
-
-## Code setup (git)
-
-1. Open a terminal from your notebook interface
-
-2. If you don't see a folder with the same name as your polyaxon project.
-   Open up a terminal and manually run the script 
-   
-   ```
-   link_workspace.sh
-   ```
-    
-   at the root of your jupyter server.
-   
-   Now, clone your repo in the linked workspace folder
-
-    **Replace the following in the commands below accordingly:** 
-    - {some name to identify your workspace}
-    - "http://your-repo"    
-    
-    ```
-    git clone "http://your-repo"
-    ```
-
-3. Configure your git repo in polyaxon 
-
-    **Replace the following in the commands below accordingly:**
-    - xxxx@aiap.sg
-    - your name
-    - rest of path to your_git_repo
-     
-    ```
-    cd {your cloned repo}
-    git config user.email "xxxx@aiap.sg"
-    git config user.name "your name"
-    ```
-
-4. Add your username to the repo url.
-
-    ```
-    vi .git/config 
-    ``` 
-    Add your **username with @** after *http://* under remote origin
-    url \
-    Eg.
-    ```
-    [remote origin]
-      url = http://my_username@gitlab.int.aisingapore.org/aisg/polyaxon-examples.git
-    ```
-
-### Conda env updates
-
-1. For dependency management, manually add any new libraries required to
-the **pip section** of [conda.yml](conda.yml). Only add to the **conda
-dependencies section** if strictly required. This is to help reduce the
-conda dependency search which is slow, error prone and can cause issues
-when building on gitlab.   
-
-### Uploading files to your polyaxon data
-
-Use the jupyter upload function to upload. You need to ensure it 
-goes into your project workspace folder or the **data** folder in
-your jupyter server root so that it gets persisted. Anything other 
-than these locations will not be persistent and will disappear if 
-your jupyter server is shutdown or crashes.
-
-
-## End Notes
-
-- If container gets killed/stopped, just restart the notebook.
-- Check build and statuses/logs in Polyaxon dashboard 
-for any startup failures
-- Refer to [polyaxon-examples repo][1] for more 
-troubleshooting tips
-
-<!-- Reference links -->
-
-[1]: http://gitlab.int.aisingapore.org/aisg/polyaxon-examples 
