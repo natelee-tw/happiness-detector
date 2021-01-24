@@ -10,7 +10,7 @@
 ## Deployment
 App can be deployed on Streamlit with ```streamlit run app.py```
 
-![Cover page](gif/happyness_detector.gif?raw=true "App")
+![Cover page](gif/gif-extra-large.gif?raw=true "App")
 
 The app is also packaged for deployment on Heroku. 
 But as this app requires both openCV and tensorflow to run, it could not qualify for the free tier. 
