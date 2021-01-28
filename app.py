@@ -16,12 +16,6 @@ WEBRTC_CLIENT_SETTINGS = ClientSettings(
 )
 
 
-def local_css(file_name):
-    """ Method for reading styles.css and applying necessary changes to HTML"""
-    with open(file_name) as f:
-        st.markdown(f'<style>{f.read()}</style>', unsafe_allow_html=True)
-
-
 def app_object_detection():
     class NNVideoTransformer(VideoTransformerBase):
 
