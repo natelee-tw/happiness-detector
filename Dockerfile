@@ -15,4 +15,8 @@ COPY app.py .
 
 EXPOSE 8501
 
-ENTRYPOINT ["streamlit", "run", "app.py"]
+# ENTRYPOINT ["streamlit", "run", "app.py"]
+
+ENTRYPOINT streamlit run app.py
+
+
