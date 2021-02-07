@@ -9,6 +9,7 @@
 
 ## Deployment
 App can be deployed on Streamlit with ```streamlit run app.py```
+Or you can run it with docker with ```docker build . -t happiness-detector``` and ```docker run -ti --rm happiness-detector```
 
 ![Cover page](gif/gif-extra-large.gif?raw=true "App")
 
