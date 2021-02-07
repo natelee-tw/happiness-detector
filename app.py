@@ -49,5 +49,5 @@ def main():
     st.subheader('Are you happy today?')
     app_object_detection()
 
-
-main()
+if __name__ == "__main__":
+    main()
